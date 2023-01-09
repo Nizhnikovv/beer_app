@@ -10,11 +10,8 @@ login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 mail = Mail()
 
-@login_manager.user_loader
-def load_user(user_id):
-    pass
 
-def create_app(config_class = Config):
+def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(Config)
 

@@ -11,8 +11,6 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(20), nullable=False)
-    last_name = db.Column(db.String(20), nullable=False)
     nickname = db.Column(db.String(120), nullable=False, unique=True)
     image_file = db.Column(db.String(20), nullable=False, default="default.jpg")
     password = db.Column(db.String(60), nullable=False)
@@ -36,7 +34,8 @@ class User(db.Model, UserMixin):
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_ordered = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=pytz.timezone("Europe/Moscow")))
-    item = db.Column(db.Iteger, nullable=False)
+    item = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     unit_price = db.Column(db.Integer, nullable=False)
-    completed = db.Column(db.Boolean, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
