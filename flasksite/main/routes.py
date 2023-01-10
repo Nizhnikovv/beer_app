@@ -21,7 +21,6 @@ def buy():
         user = current_user
         form.populate_obj(order)
         order.author = user
-        user.volume += float(form.quantity.data)
         db.session.add(order)
         db.session.commit()
         flash("Заказ был сделан!", "success")

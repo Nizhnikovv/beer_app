@@ -25,8 +25,10 @@ def create_app(config_class=Config):
 
     from flasksite.main.routes import main
     from flasksite.users.routes import users
+    from flasksite.orders.routes import orders
     app.register_blueprint(main)
     app.register_blueprint(users)
+    app.register_blueprint(orders)
 
     with app.app_context():
         db.create_all()

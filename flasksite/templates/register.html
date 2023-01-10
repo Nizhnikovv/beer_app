@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 <form action="" method="POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
-    <legend class="border-botton mb-4 text-light">{{legend}}</legend>
+    <legend class="border-botton mb-4 text-light">Зарегестрироваться</legend>
   <div class="mb-3">
     {{form.nickname.label(class="form-label text-white")}} {%if form.nickname.errors%}
     {{form.nickname(class="form-control form-control-lg is-invalid")}}

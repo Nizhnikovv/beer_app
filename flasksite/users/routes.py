@@ -23,7 +23,7 @@ def register():
         db.session.commit()
         flash("Ваш аккаунт был создан!", "success")
         return redirect(url_for("main.home"))
-    return render_template("register.html", form=form, legend="Зарегестрироваться")
+    return render_template("register.html", form=form)
 
 @users.route("/login", methods=["GET", "POST"])
 def login():
@@ -40,7 +40,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for("main.home"))
         else:
             flash("Не удалось зайти. Проверьте правильность пароля", "danger")
-    return render_template("login.html", form=form, legend="Войти")
+    return render_template("login.html", form=form)
 
 @users.route("/user/<string:nickname>", methods=["GET", "POST"])
 @login_required
