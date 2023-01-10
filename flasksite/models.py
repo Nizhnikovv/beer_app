@@ -1,6 +1,6 @@
 from datetime import datetime
 from flasksite import db, login_manager
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
 import pytz
@@ -15,6 +15,8 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default="default.jpg")
     password = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    volume = db.Column(db.Integer, nullable=False, default=0)
+    date_since = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=pytz.timezone("Europe/Moscow")))
     orders = db.relationship("Order", backref="author", lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
@@ -36,6 +38,6 @@ class Order(db.Model):
     date_ordered = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=pytz.timezone("Europe/Moscow")))
     item = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    unit_price = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    unit_price = db.Column(db.Integer, nullable=False, default=90)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, default=current_user)
     completed = db.Column(db.Boolean, nullable=False, default=False)
