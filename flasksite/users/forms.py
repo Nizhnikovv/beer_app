@@ -6,7 +6,7 @@ from flasksite.models import User
 
 class UserForm(FlaskForm):
     nickname = StringField("Введите никнейм", [DataRequired("Введите никнейм"), Length(message="Никнейм должен не должен превышать 10 символов", max=10)])
-    email = EmailField("Введите вашу почту", [DataRequired("Введите почту"), Email("Введите корректный адрес электронной почты")])
+    email = EmailField("Введите вашу почту", [Email("Введите корректный адрес электронной почты")])
     password = PasswordField("Введите пароль", [DataRequired("Введите пароль")])
     con_password = PasswordField("Повторите пароль", [EqualTo(message="Пароли не совпадают", fieldname="password")])
     picture = FileField("Фото профиля", [FileAllowed(["jpg", "png"], "Только jpg и png файлы")])
@@ -38,3 +38,18 @@ class LoginForm(FlaskForm):
     def validate_email(form, field):
         if field.data != "" and not User.query.filter_by(email=field.data).first():
             raise ValidationError("Аккаунт с такой почтой не существует")
+
+class DeleteUserForm(FlaskForm):
+    submit = SubmitField("Delete")            
+
+class UpdateUser(FlaskForm):
+    email = EmailField("Введите новую почту", [Email("Введите корректный адрес электронной почты")])
+    picture = FileField("Фото профиля", [FileAllowed(["jpg", "png"], "Только jpg и png файлы")])
+    submit = SubmitField("Обновить аккаунт")
+    user_id = HiddenField()
+
+    def validate_email(self, email):
+        if User.query.get(int(self.user_id.data)).email != email.data:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('That email is taken. Please choose a different one.')

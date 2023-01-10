@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     volume = db.Column(db.Integer, nullable=False, default=0)
     date_since = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=pytz.timezone("Europe/Moscow")))
+    admin = db.Column(db.Boolean, nullable=False, default=False)
     orders = db.relationship("Order", backref="author", lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
