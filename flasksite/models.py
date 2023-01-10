@@ -1,9 +1,10 @@
 from datetime import datetime
-from flasksite import db, login_manager
+from flasksite import db, login_manager, mail
 from flask_login import UserMixin, current_user
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
-from flask import current_app
+from flask import current_app, url_for
 import pytz
+from flask_mail import Message
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -31,6 +32,18 @@ class User(db.Model, UserMixin):
         except:
             return None
         return User.query.get_or_404(user_id)
+
+    def send_reset_email(user):
+        token = user.get_reset_token()
+        msg = Message('Запрос на сброс пароля',
+                    sender='dmitrix_n@mail.ru',
+                    recipients=[user.email])
+        msg.body = f'''Для того, чтобы сбросить ваш пароль, перейдите по следующей ссылке:
+{url_for('users.reset_token', token=token, _external=True)}
+
+Если вы не делали такого запроса, просто проигнорируйте это сообщение и ничего не изменится.
+'''
+        mail.send(msg)        
 
 
 class Order(db.Model):
