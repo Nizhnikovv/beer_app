@@ -1,15 +1,16 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, HiddenField, EmailField
+from wtforms import StringField, PasswordField, HiddenField, EmailField, SubmitField, BooleanField
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import DataRequired, Length, ValidationError, Email, EqualTo
 from flasksite.models import User
 
 class UserForm(FlaskForm):
-    nickname = StringField("Введите никнейм", [DataRequired("Введите никнейм"), Length("Никнейм должен не должен превышать 10 символов", max=10)])
+    nickname = StringField("Введите никнейм", [DataRequired("Введите никнейм"), Length(message="Никнейм должен не должен превышать 10 символов", max=10)])
     email = EmailField("Введите вашу почту", [DataRequired("Введите почту"), Email("Введите корректный адрес электронной почты")])
     password = PasswordField("Введите пароль", [DataRequired("Введите пароль")])
-    con_password = PasswordField("Повторите пароль", [EqualTo("Пароли не совпадают")])
+    con_password = PasswordField("Повторите пароль", [EqualTo(message="Пароли не совпадают", fieldname="password")])
     picture = FileField("Фото профиля", [FileAllowed(["jpg", "png"], "Только jpg и png файлы")])
+    submit = SubmitField("Создать аккаунт")
 
     def validate_nickname(form, field):
         if " " in field.data:
@@ -20,3 +21,20 @@ class UserForm(FlaskForm):
     def validate_email(form, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError("Электронная почта уже занята другим пользователем")
+
+class LoginForm(FlaskForm):
+    nickname = StringField("Введите никнейм или почту", [Length(message="Никнейм должен не должен превышать 10 символов", max=10)])
+    email = EmailField("Введите вашу почту")
+    password = PasswordField("Введите пароль", [DataRequired("Введите пароль")])
+    remember = BooleanField("Запомнить меня")
+    submit = SubmitField("Войти")
+
+    def validate_nickname(form, field):
+        if field.data == "" and form.email.data == "":
+            raise ValidationError("Введите либо никнейм, либо почту")
+        if field.data != "" and not User.query.filter_by(nickname=field.data).first():
+            raise ValidationError("Никнейм не существует")
+
+    def validate_email(form, field):
+        if field.data != "" and not User.query.filter_by(email=field.data).first():
+            raise ValidationError("Аккаунт с такой почтой не существует")

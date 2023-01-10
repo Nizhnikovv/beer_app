@@ -18,14 +18,14 @@
       href="{{url_for('static', filename='images/favicon.jpg')}}"
     />
 
-    <style>
+    <!-- <style>
       body {
         background-image: url("{{url_for('static', filename='images/background.jpg')}}");
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
       }
-    </style>
+    </style> -->
 
     {% if title %}
     <title>{{ title }}</title>
@@ -33,15 +33,15 @@
     <title>Beerate</title>
     {% endif %}
   </head>
-  <body>
-    <nav class="navbar navbar-expand bg-body-secondary rounded-bottom-4">
+  <body style="background-color:#83580b">
+    <nav class="navbar navbar-expand bg-dark rounded-bottom-4">
       <div class="container-fluid fs-3">
-        <a class="navbar-brand fs-3" href="{{url_for('main.home')}}">Beerate</a>
+        <a class="navbar-brand fs-3 text-white ps-3" href="{{url_for('main.home')}}">Beerate</a>
         <div class="navbar-nav ms-auto me-3">
           <a class="btn btn-danger fs-3 text-dark rounded-5" href="#"
             >Купить пиво!</a
           >
-          <a class="nav-link ms-3" href="#">Войти</a>
+          <a class="nav-link ms-3 text-white" href="#">Войти</a>
         </div>
       </div>
     </nav>

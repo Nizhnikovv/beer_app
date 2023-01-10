@@ -1,10 +1,11 @@
 import os
 from PIL import Image
-from werkzeug.utils import secure_filename
 from flask import current_app
+import secrets
 
 def save_picture(form_picture):
-    picture_fn = secure_filename(form_picture.filename)
+    _, ext = os.path.splitext(form_picture.filename)
+    picture_fn = secrets.token_hex(8) + ext
     picture_path = os.path.join(current_app.root_path, 'static/prof_pict', picture_fn)
 
     i = Image.open(form_picture)

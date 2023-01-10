@@ -1,0 +1,41 @@
+{% extends "layout.html" %} {% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {{form.hidden_tag()}}
+    <legend class="border-botton mb-4 text-light">{{legend}}</legend>
+  <div class="input-group mb-3">
+    {{form.nickname.label(class="input-group-text")}} {%if form.nickname.errors%}
+    {{form.nickname(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.nickname.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.nickname(class="form-control form-control-lg")}} {%endif%}
+    {%if form.email.errors%}
+    {{form.email(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.email.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.email(class="form-control form-control-lg")}} {%endif%}
+  </div>
+  <div class="mb-3">
+    {{form.password.label(class="form-label text-white")}} {%if form.password.errors%}
+    {{form.password(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.password.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.password(class="form-control form-control-lg")}} {%endif%}
+  </div>
+  <div class="mb-3">
+    {{ form.remember(class="form-check-input me-2") }} {{
+        form.remember.label(class="form-check-label") }}
+  </div>
+  <div class="mb-3">{{form.submit(class="btn btn-outline-dark")}}</div>
+    </div>
+</form>
+
+{% endblock content %}

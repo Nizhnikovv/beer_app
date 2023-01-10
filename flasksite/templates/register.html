@@ -1,0 +1,59 @@
+{% extends "layout.html" %} {% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {{form.hidden_tag()}}
+    <legend class="border-botton mb-4 text-light">{{legend}}</legend>
+  <div class="mb-3">
+    {{form.nickname.label(class="form-label text-white")}} {%if form.nickname.errors%}
+    {{form.nickname(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.nickname.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.nickname(class="form-control form-control-lg")}} {%endif%}
+  </div>
+  <div class="mb-3">
+    {{form.email.label(class="form-label text-white")}} {%if form.email.errors%}
+    {{form.email(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.email.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.email(class="form-control form-control-lg")}} {%endif%}
+  </div>
+  <div class="mb-3">
+    {{form.password.label(class="form-label text-white")}} {%if form.password.errors%}
+    {{form.password(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.password.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.password(class="form-control form-control-lg")}} {%endif%}
+  </div>
+  <div class="mb-3">
+    {{form.con_password.label(class="form-label text-white")}} {%if form.con_password.errors%}
+    {{form.con_password(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.con_password.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.con_password(class="form-control form-control-lg")}} {%endif%}
+  </div>
+  <div class="mb-3">
+    {{form.picture.label(class="form-label text-white")}} {%if form.picture.errors%}
+    {{form.picture(class="form-control form-control-lg is-invalid")}}
+    <div class="invalid-feedback">
+      {%for error in form.picture.errors%}
+      <span>{{error}}</span>
+      {%endfor%}
+    </div>
+    {%else%} {{form.picture(class="form-control form-control-lg")}} {%endif%}
+  </div>
+  <div class="mb-3">{{form.submit(class="btn btn-outline-dark")}}</div>
+    </div>
+</form>
+
+{% endblock content %}
