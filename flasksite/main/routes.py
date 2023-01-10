@@ -3,6 +3,8 @@ from flasksite.models import User, Order
 from flasksite import db
 from flask_login import login_required, current_user
 from .forms import BuyForm
+from datetime import datetime, timedelta
+import pytz
 
 main = Blueprint("main", __name__)
 
@@ -26,5 +28,14 @@ def buy():
         flash("Заказ был сделан!", "success")
         return redirect(url_for("orders.order", id=order.id))
     return render_template("buy.html", form=form)
-        
+
+@main.before_request
+def before():
+    orders = Order.query.filter_by(completed=False)
+    msc_tz = pytz.timezone("Europe/Moscow")
+    for order in orders:
+        if msc_tz.localize(order.date_ordered) - timedelta(days=2) > datetime.now(tz=pytz.timezone("Europe/Moscow")):
+            db.session.delete(order)
+    db.session.commit()
+
         

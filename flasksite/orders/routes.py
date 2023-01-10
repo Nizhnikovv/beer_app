@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, flash, redirect, url_for
+from flask import Blueprint, render_template, abort, flash, redirect, url_for, current_app
 from flask_login import login_required, current_user
 from flasksite.models import Order
 from .forms import DeleteOrder, ConfirmOrder
