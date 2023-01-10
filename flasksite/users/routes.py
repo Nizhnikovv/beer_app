@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, redirect, render_template, url_for, request, abort
-from .forms import UserForm, LoginForm, DeleteUserForm, UpdateUser
+from .forms import UserForm, LoginForm, DeleteUserForm, UpdateUser, RequestResetForm, ResetPasswordForm
 from flasksite.models import User, Order
 from flasksite import db, bcrypt
 from .utils import save_picture, delete_picture
@@ -17,7 +17,7 @@ def register():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             user.image_file = picture_file
-        hashed_pw = bcrypt.generate_password_hash(form.password.data)
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
         user.password = hashed_pw
         db.session.add(user)
         db.session.commit()
@@ -83,4 +83,31 @@ def update_user(nickname):
         return redirect(url_for("users.user_orders", nickname=user.nickname))
     return render_template("update_user.html", title="Изменить " + user.nickname, form=form)
     
+@users.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        user.send_reset_email()
+        flash('На вашу почту было отправлено письмо для восстановления пароля', 'info')
+        return redirect(url_for('users.login'))
+    return render_template('reset_request.html', form=form)
     
+@users.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('Неправельный или просроченный токен', 'warning')
+        return redirect(url_for('users.reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Ваш пароль был обновлен', 'success')
+        return redirect(url_for('users.login'))
+    return render_template('reset_token.html', form=form)

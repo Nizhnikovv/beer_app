@@ -21,6 +21,9 @@ def buy():
     if form.validate_on_submit():
         order = Order()
         user = current_user
+        if Order.query.filter_by(author=user, completed=False).first():
+            flash("Вы не можете иметь более одного не выполненного заказа", "warning")
+            return redirect(url_for("users.user_orders", nickname=user.nickname))
         form.populate_obj(order)
         order.author = user
         db.session.add(order)
