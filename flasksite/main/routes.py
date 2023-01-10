@@ -24,7 +24,7 @@ def buy():
         db.session.add(order)
         db.session.commit()
         flash("Заказ был сделан!", "success")
-        return redirect(url_for("main.home"))
+        return redirect(url_for("orders.order", id=order.id))
     return render_template("buy.html", form=form)
         
         
