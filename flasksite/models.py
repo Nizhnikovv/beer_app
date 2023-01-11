@@ -62,13 +62,18 @@ class User(db.Model, UserMixin):
 
     @staticmethod
     def send_order_deletion(order):
+        if order.item == 1:
+            drink = "Hoegaarden"
+        else:
+            drink = "Bud"
         for user in User.query.filter_by(admin=True):
             msg = Message("Заказ пива был удален", sender="dmitrix_n@mail.ru", recipients=[user.email])
-            if order.item == 1:
-                drink = "Hoegaarden"
-            else:
-                drink = "Bud"
-            msg.body = f'''Заказ номер {order.id}({order.quantity}l "{drink}") был отменен''' 
+            msg.body = f'''Заказ номер {order.id}({order.quantity}l "{drink}") был удален''' 
+            mail.send(msg)
+        user = order.author
+        if user.admin != True:
+            msg = Message("Заказ пива был удален", sender="dmitrix_n@mail.ru", recipients=[user.email])
+            msg.body = f'''Ваш заказ номер {order.id}({order.quantity}l "{drink}") был удален''' 
             mail.send(msg)
 
 class Order(db.Model):
