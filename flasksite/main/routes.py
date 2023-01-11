@@ -33,14 +33,5 @@ def buy():
         return redirect(url_for("orders.order", id=order.id))
     return render_template("buy.html", form=form)
 
-@main.before_request
-def before():
-    orders = Order.query.filter_by(completed=False)
-    msc_tz = pytz.timezone("Europe/Moscow")
-    for order in orders:
-        if msc_tz.localize(order.date_ordered) - timedelta(days=1) > datetime.now(tz=pytz.timezone("Europe/Moscow")):
-            User.send_order_deletion(order)
-            db.session.delete(order)
-    db.session.commit()
 
         
