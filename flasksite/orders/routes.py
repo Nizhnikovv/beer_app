@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, flash, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from flasksite.models import Order
+from flasksite.models import Order, User
 from .forms import DeleteOrder, ConfirmOrder
 from flasksite import db
 
@@ -32,6 +32,7 @@ def order(id):
     form_d = DeleteOrder()
     form_c = ConfirmOrder()
     if form_d.validate_on_submit():
+        User.send_order_deletion(order)
         db.session.delete(order)
         db.session.commit()
         flash("Заказ был удален", "seccess")

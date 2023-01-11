@@ -12,7 +12,7 @@ main = Blueprint("main", __name__)
 def home():
     users = User.query.order_by(User.volume.desc()).all()
     length = len(users)
-    return render_template("home.html", users=users, length=length) 
+    return render_template("HomePage.html", users=users, length=length) 
 
 @main.route("/buy", methods=["GET", "POST"])
 @login_required
@@ -28,6 +28,7 @@ def buy():
         order.author = user
         db.session.add(order)
         db.session.commit()
+        User.send_order_notif(order)
         flash("Заказ был сделан!", "success")
         return redirect(url_for("orders.order", id=order.id))
     return render_template("buy.html", form=form)
@@ -37,7 +38,7 @@ def before():
     orders = Order.query.filter_by(completed=False)
     msc_tz = pytz.timezone("Europe/Moscow")
     for order in orders:
-        if msc_tz.localize(order.date_ordered) - timedelta(days=2) > datetime.now(tz=pytz.timezone("Europe/Moscow")):
+        if msc_tz.localize(order.date_ordered) - timedelta(days=1) > datetime.now(tz=pytz.timezone("Europe/Moscow")):
             db.session.delete(order)
     db.session.commit()
 

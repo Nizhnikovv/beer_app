@@ -46,6 +46,30 @@ class User(db.Model, UserMixin):
 '''
         mail.send(msg)        
 
+    @staticmethod
+    def send_order_notif(order):
+        for user in User.query.filter_by(admin=True):
+            msg = Message("Новый заказ пива", sender="dmitrix_n@mail.ru",recipients=[user.email])
+            if order.item == 1:
+                drink = "Hoegaarden"
+            else:
+                drink = "Bud"
+            msg.body = f'''Заказ номер {order.id}.
+{order.author.nickname} заказал {order.quantity}l пива "{drink}" {order.date_ordered.strftime("%-d.%m.%Y в %-H:%M:%S")}.
+Ссылка на заказ: {url_for("orders.order", id=order.id, _external=True)}
+'''
+            mail.send(msg)
+
+    @staticmethod
+    def send_order_deletion(order):
+        for user in User.query.filter_by(admin=True):
+            msg = Message("Заказ пива был удален", sender="dmitrix_n@mail.ru", recipients=[user.email])
+            if order.item == 1:
+                drink = "Hoegaarden"
+            else:
+                drink = "Bud"
+            msg.body = f'''Заказ номер {order.id}({order.quantity}l "{drink}") был отменен''' 
+            mail.send(msg)
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)

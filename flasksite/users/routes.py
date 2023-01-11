@@ -23,7 +23,7 @@ def register():
         db.session.commit()
         flash("Ваш аккаунт был создан!", "success")
         return redirect(url_for("main.home"))
-    return render_template("register.html", form=form)
+    return render_template("Regi.html", form=form)
 
 @users.route("/login", methods=["GET", "POST"])
 def login():
