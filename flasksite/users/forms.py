@@ -15,6 +15,8 @@ class UserForm(FlaskForm):
     def validate_nickname(form, field):
         if " " in field.data:
             raise ValidationError("Никнейм не должен содержать пробелы")
+        if "@" in field.data:
+            raise ValidationError("Никнейм не должен содержать @")
         if User.query.filter_by(nickname=field.data).first():
             raise ValidationError("Никнейм уже занят")
 
@@ -23,21 +25,35 @@ class UserForm(FlaskForm):
             raise ValidationError("Электронная почта уже занята другим пользователем")
 
 class LoginForm(FlaskForm):
-    nickname = StringField("Введите никнейм или почту", [Length(message="Никнейм должен не должен превышать 10 символов", max=10)])
-    email = EmailField("Введите вашу почту")
+    nickname_or_email = StringField("Введите никнейм или почту")
+    # email = EmailField("Введите вашу почту")
     password = PasswordField("Введите пароль", [DataRequired("Введите пароль")])
     remember = BooleanField("Запомнить меня")
     submit = SubmitField("Войти")
 
-    def validate_nickname(form, field):
-        if field.data == "" and form.email.data == "":
-            raise ValidationError("Введите либо никнейм, либо почту")
-        if field.data != "" and not User.query.filter_by(nickname=field.data).first():
-            raise ValidationError("Никнейм не существует")
+    # def validate_nickname(form, field):
+    #     if field.data == "" and form.email.data == "":
+    #         raise ValidationError("Введите либо никнейм, либо почту")
+    #     if field.data != "" and not User.query.filter_by(nickname=field.data).first():
+    #         raise ValidationError("Никнейм не существует")
 
-    def validate_email(form, field):
-        if field.data != "" and not User.query.filter_by(email=field.data).first():
-            raise ValidationError("Аккаунт с такой почтой не существует")
+    # def validate_email(form, field):
+    #     if field.data != "" and not User.query.filter_by(email=field.data).first():
+    #         raise ValidationError("Аккаунт с такой почтой не существует")
+
+    def validate_nickname_or_email(form, field):
+        try:
+            Email()(form, field)
+        except ValidationError:
+            if field.data == "":
+                raise ValidationError("Введите либо никнейм, либо почту")
+            if " " in field.data and len(field.data) > 10:
+                raise ValidationError("Никнейм не должен содержать пробелы и быть больше 10 символов")
+            if not User.query.filter_by(nickname=field.data).first():
+                raise ValidationError("Никнейм не существует")
+        else:
+            if not User.query.filter_by(email=field.data).first():
+                raise ValidationError("Аккаунт с такой почтой не существует")
 
 class DeleteUserForm(FlaskForm):
     submit = SubmitField("Delete")            

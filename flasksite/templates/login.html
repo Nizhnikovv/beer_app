@@ -2,23 +2,15 @@
 <form action="" method="POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
     <legend class="border-botton mb-4 text-light">Войти</legend>
-  <div class="input-group mb-3">
-    {{form.nickname.label(class="input-group-text")}} {%if form.nickname.errors%}
-    {{form.nickname(class="form-control form-control-lg is-invalid")}}
+      <div class="mb-3">
+    {{form.nickname_or_email.label(class="form-label text-white")}} {%if form.nickname_or_email.errors%}
+    {{form.nickname_or_email(class="form-control form-control-lg is-invalid")}}
     <div class="invalid-feedback">
-      {%for error in form.nickname.errors%}
+      {%for error in form.nickname_or_email.errors%}
       <span>{{error}}</span>
       {%endfor%}
     </div>
-    {%else%} {{form.nickname(class="form-control form-control-lg")}} {%endif%}
-    {%if form.email.errors%}
-    {{form.email(class="form-control form-control-lg is-invalid")}}
-    <div class="invalid-feedback">
-      {%for error in form.email.errors%}
-      <span>{{error}}</span>
-      {%endfor%}
-    </div>
-    {%else%} {{form.email(class="form-control form-control-lg")}} {%endif%}
+    {%else%} {{form.nickname_or_email(class="form-control form-control-lg")}} {%endif%}
   </div>
   <div class="mb-3">
     {{form.password.label(class="form-label text-white")}} {%if form.password.errors%}
