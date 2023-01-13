@@ -2,5 +2,5 @@ venv
 .vscode
 __pycache__
 instance
-flasksite/static/prof_pict
+flasksite/static/prof_pict/*
 !/flasksite/static/prof_pict/default.jpg
