@@ -2,3 +2,4 @@ venv
 .vscode
 __pycache__
 instance
+flasksite/static/prof_pict
