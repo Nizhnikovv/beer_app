@@ -22,14 +22,14 @@ class User(db.Model, UserMixin):
     orders = db.relationship("Order", backref="author", lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id})
+        s = Serializer(current_app.config['SECRET_KEY'])
+        return s.dumps(self.id)
 
     @staticmethod
     def verify_reset_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
+            user_id = s.loads(token, max_age=1800)
         except:
             return None
         return User.query.get_or_404(user_id)

@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 <form action="" method="POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
-    <legend class="border-botton mb-4 text-light">Войти</legend>
+    <legend class="border-bottom mb-4 text-light">Войти</legend>
       <div class="mb-3">
     {{form.nickname_or_email.label(class="form-label text-white")}} {%if form.nickname_or_email.errors%}
     {{form.nickname_or_email(class="form-control form-control-lg is-invalid")}}
@@ -22,12 +22,21 @@
     </div>
     {%else%} {{form.password(class="form-control form-control-lg")}} {%endif%}
   </div>
+  <div class="form-group">
   <div class="mb-3">
-    {{ form.remember(class="form-check-input me-2") }} {{
-        form.remember.label(class="form-check-label") }}
+    {{ form.remember(class="form-check-input") }} {{
+        form.remember.label(class="form-check-label text-white") }}
+        <small class="text-muted ml-6">
+          <a href="{{ url_for('users.reset_request') }}">Забыли пароль?</a>
+        </small>
+
   </div>
-  <div class="mb-3">{{form.submit(class="btn btn-outline-dark")}}</div>
-    </div>
+  </div>
+
+  <div class="mb-3">{{form.submit(class="Submit")}}</div>
+  <div class="mb-3">
+    <a class="fs-6" href="{{url_for('users.register')}}">Зарегестрироваться!</a>
+  </div>
 </form>
 
 {% endblock content %}

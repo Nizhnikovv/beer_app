@@ -1,31 +1,46 @@
 {% extends "layout.html" %} {% block content %}
-<div class="row mb-3">
-  <h2 class="col-12 col-sm-8 col-md-7 col-lg-8">
-    Заказы {{ user.nickname }}({{ orders.total }})
-  </h2>
-  {% if current_user.admin == True %}
-  <div class="col">
-    <a
-      class="btn btn-secondary btn-sm mt-1 mb-1"
-      href="{{ url_for('users.update_user', nickname=user.nickname) }}"
-      >Update</a
-    >
-    <button
-      type="button"
-      class="btn btn-danger btn-sm m-1"
-      data-bs-toggle="modal"
-      data-bs-target="#deleteModal"
-    >
-      Delete
-    </button>
+<div class="leaderboard col-10 col-md-12 col-lg-9">
+  <div class="row">
+    <div class="text-center col-8"><p>Заказы {{user.nickname}}({{length}})</p></div>
+    {% if current_user.admin == True %}
+    <div class="col-4">
+      <a
+        class="btn btn-secondary btn-sm mt-1 mb-1"
+        href="{{ url_for('users.update_user', nickname=user.nickname) }}"
+        >Update</a
+      >
+      <button
+        type="button"
+        class="btn btn-danger btn-sm m-1"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteModal"
+      >
+       Удалить 
+      </button>
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
+  <table>
+    <tr>
+      <td class="col-1">ID</td>
+      <td class="col-3">DATE</td>
+      <td class="col-2">BEER</td>
+      <td class="col-2">L</td>
+      <td class="col-2">C</td>
+    </tr>
+    {%for order in orders%}
+    <tr>
+      <td class="col-1"><a href="{{url_for('orders.order', id=order.id)}}">{{order.id}}</a></td>
+      <td class="col-2">{{order.date_ordered.strftime("%d.%m.%Y %-H:%M")}}</td>
+      <td class="col-3">
+        {%if order.item == 2%}Bud{%else%}Hoegaarden{%endif%}
+      </td>
+      <td class="col-2">{{order.quantity}}</td>
+      <td class="col-2">{%if order.completed%}&#10004;{%endif%}</td>
+    </tr>
+    {%endfor%}
+  </table>
 </div>
-{%for order in orders%}
-<div class="containter pb-3 mb-2 border-top">
-  <div class="row">#{{order.id}} {{order.date_ordered.strftime("%-d %b %Y")}}</div>
-</div>
-{%endfor%}
 <div
   class="modal fade"
   id="deleteModal"
@@ -36,7 +51,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Delete User?</h5>
+        <h5 class="modal-title" id="deleteModalLabel">Удалить пользователя</h5>
         <button
           type="button"
           class="btn-close"
@@ -46,7 +61,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
+          Закрыть
         </button>
         <form action="" method="POST">
           {{form.hidden_tag()}} {{form.submit(class="btn btn-danger")}}

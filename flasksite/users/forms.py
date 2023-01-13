@@ -9,7 +9,7 @@ class UserForm(FlaskForm):
     email = EmailField("Введите вашу почту", [Email("Введите корректный адрес электронной почты")])
     password = PasswordField("Введите пароль", [DataRequired("Введите пароль")])
     con_password = PasswordField("Повторите пароль", [EqualTo(message="Пароли не совпадают", fieldname="password")])
-    picture = FileField("Фото профиля", [FileAllowed(["jpg", "png"], "Только jpg и png файлы")])
+    picture = FileField("Фото профиля(по желанию)", [FileAllowed(["jpg", "png"], "Только jpg и png файлы")])
     submit = SubmitField("Создать аккаунт")
 
     def validate_nickname(form, field):
@@ -31,16 +31,6 @@ class LoginForm(FlaskForm):
     remember = BooleanField("Запомнить меня")
     submit = SubmitField("Войти")
 
-    # def validate_nickname(form, field):
-    #     if field.data == "" and form.email.data == "":
-    #         raise ValidationError("Введите либо никнейм, либо почту")
-    #     if field.data != "" and not User.query.filter_by(nickname=field.data).first():
-    #         raise ValidationError("Никнейм не существует")
-
-    # def validate_email(form, field):
-    #     if field.data != "" and not User.query.filter_by(email=field.data).first():
-    #         raise ValidationError("Аккаунт с такой почтой не существует")
-
     def validate_nickname_or_email(form, field):
         try:
             Email()(form, field)
@@ -56,7 +46,7 @@ class LoginForm(FlaskForm):
                 raise ValidationError("Аккаунт с такой почтой не существует")
 
 class DeleteUserForm(FlaskForm):
-    submit = SubmitField("Delete")            
+    submit = SubmitField("Удалить")            
 
 class UpdateUser(FlaskForm):
     email = EmailField("Введите новую почту", [Email("Введите корректный адрес электронной почты")])
@@ -71,8 +61,7 @@ class UpdateUser(FlaskForm):
                 raise ValidationError('That email is taken. Please choose a different one.')
 
 class RequestResetForm(FlaskForm):
-    email = StringField('Почта',
-                        validators=[Email("Введите электронную почту")])
+    email = StringField('Почта')
     submit = SubmitField('Запросить сброс пароля')
 
     def validate_email(self, email):

@@ -1,6 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 <form action="" method="POST" enctype="multipart/form-data">
     {{form.hidden_tag()}}
+    <legend class="border-bottom mb-4 text-light">Купить пиво!</legend>
     <div class="mb-3">
         {{form.item.label(class="form-label text-white")}}
         {{form.item(class="form-control form-control-lg")}}
@@ -9,7 +10,7 @@
         {{form.quantity.label(class="form-label text-white")}}
         {{form.quantity(class="form-control form-control-lg")}}
     </div>
-    <div class="mb-3">{{form.submit(class="btn btn-outline-dark")}}</div>
+    <div class="mb-3">{{form.submit(class="Submit")}}</div>
 </form>
 
 {% endblock content %}

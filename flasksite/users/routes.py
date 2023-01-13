@@ -23,7 +23,7 @@ def register():
         db.session.commit()
         flash("Ваш аккаунт был создан!", "success")
         return redirect(url_for("main.home"))
-    return render_template("Regi.html", form=form)
+    return render_template("register.html", form=form)
 
 @users.route("/login", methods=["GET", "POST"])
 def login():
@@ -49,7 +49,8 @@ def user_orders(nickname):
     user = User.query.filter_by(nickname=nickname).first_or_404()
     if current_user.admin != True and current_user != user:
         abort(403)
-    orders = Order.query.filter_by(author=user).order_by(Order.date_ordered.desc())
+    orders = Order.query.filter_by(author=user).order_by(Order.date_ordered.desc()).all()
+    length = len(orders)
     form = DeleteUserForm()
     if form.validate_on_submit():
         if current_user.admin != True:
@@ -62,7 +63,7 @@ def user_orders(nickname):
         db.session.commit()
         flash("Пользователь был удален", "success")
         return redirect(url_for("main.home"))
-    return render_template("user_orders.html", orders=orders, user=user, form=form)
+    return render_template("user_orders.html", orders=orders, user=user, form=form, length=length)
 
 @users.route("/user/<string:nickname>/update", methods=["GET", "POST"])
 @login_required

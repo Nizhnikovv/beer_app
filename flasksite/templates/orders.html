@@ -1,8 +1,29 @@
 {% extends "layout.html" %} {% block content %}
-  <legend class="border-botton mb-4 text-light">{{legend}}</legend>
-{%for order in orders%}
-<div class="containter pb-3 mb-2 border-top">
-  <div class="row">#{{order.id}} {{order.date_ordered.strftime("%-d %b %Y")}}</div>
+<div class="leaderboard col-10 col-md-12 col-lg-9">
+  <div class="row">
+    <div class="text-center col-8"><p>{{legend}}</p></div>
+  </div>
+  <table>
+    <tr>
+      <td class="col-1">ID</td>
+      <td class="col-2">DATE</td>
+      <td class="col-3">BEER</td>
+      <td class="col-2">L</td>
+      <td class="col-2">nickname</td>
+      <td class="col-2">C</td>
+    </tr>
+    {%for order in orders%}
+    <tr>
+      <td class="col-1"><a href="{{url_for('orders.order', id=order.id)}}">{{order.id}}</a></td>
+      <td class="col-3">{{order.date_ordered.strftime("%d.%m.%Y %-H:%M")}}</td>
+      <td class="col-2">
+        {%if order.item == 2%}Bud{%else%}Hoegaarden{%endif%}
+      </td>
+      <td class="col-2">{{order.quantity}}</td>
+      <td class="col-2">{{order.author.nickname}}</td>
+      <td class="col-2">{%if order.completed%}&#10004;{%endif%}</td>
+    </tr>
+    {%endfor%}
+  </table>
 </div>
-{%endfor%}
 {% endblock content %}

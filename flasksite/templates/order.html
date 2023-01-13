@@ -1,0 +1,104 @@
+{% extends "layout.html" %} {% block content %}
+<div
+  class="display-1 {%if order.completed%}text-success{%else%}text-warning{%endif%}"
+>
+  Заказ номер {{order.id}}
+</div>
+
+<div class="row text-white mb-5">
+  <div class="col">{{order.date_ordered.strftime("%d.%m.%Y %-H:%M")}}</div>
+  <div class="col">{{order.author.nickname}}</div>
+  <div class="col">
+    {%if order.completed%}Выполнен{%else%}Не выполнен{%endif%}
+  </div>
+</div>
+<div class="text-white display-4 row mb-5">
+  <div class="col">{%if order.item == 2%}Bud{%else%}Hoegaarden{%endif%}</div>
+  <div class="col">{{order.quantity}}L</div>
+</div>
+<div class="fs-5 text-white mb-5">
+  В ближайщее удобное время прийдите за заказом, чтобы выполнить его. В будние
+  дни это делать лучше после обеда, так как персонажи учатся. Срок жизни не
+  выполненного заказа - 1 день. Потом он будет удален.
+</div>
+<div class="row">
+  {% if current_user.admin == True and order.completed == False%}
+  <button
+    type="button"
+    class="btn btn-success btn-sm m-1 col"
+    data-bs-toggle="modal"
+    data-bs-target="#completeModal"
+  >
+    Подтвердить
+  </button>
+  {% endif %}
+  {%if order.completed == False or current_user.admin == True%}
+  <button
+    type="button"
+    class="btn btn-danger btn-sm m-1 col"
+    data-bs-toggle="modal"
+    data-bs-target="#deleteModal"
+  >
+    Удалить
+  </button>
+  {%endif%}
+</div>
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Удалить заказ</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Закрыть
+        </button>
+        <form action="" method="POST">
+          {{form_d.hidden_tag()}} {{form_d.submit_d(class="btn btn-danger")}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="completeModal"
+  tabindex="-1"
+  aria-labelledby="completeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="completeModalLabel">Подтвердить заказ</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Закрыть
+        </button>
+        <form action="" method="POST">
+          {{form_c.hidden_tag()}} {{form_c.submit_c(class="btn btn-success")}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
