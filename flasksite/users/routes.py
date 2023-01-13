@@ -23,7 +23,7 @@ def register():
         db.session.commit()
         flash("Ваш аккаунт был создан!", "success")
         return redirect(url_for("main.home"))
-    return render_template("register.html", form=form)
+    return render_template("register.html", form=form, title="Регистрация")
 
 @users.route("/login", methods=["GET", "POST"])
 def login():
@@ -41,7 +41,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for("main.home"))
         else:
             flash("Не удалось зайти. Проверьте правильность пароля", "danger")
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form, title="Войти")
 
 @users.route("/user/<string:nickname>", methods=["GET", "POST"])
 @login_required
@@ -63,7 +63,7 @@ def user_orders(nickname):
         db.session.commit()
         flash("Пользователь был удален", "success")
         return redirect(url_for("main.home"))
-    return render_template("user_orders.html", orders=orders, user=user, form=form, length=length)
+    return render_template("user_orders.html", orders=orders, user=user, form=form, length=length, title="Заказы "+user.nickname)
 
 @users.route("/user/<string:nickname>/update", methods=["GET", "POST"])
 @login_required
@@ -95,7 +95,7 @@ def reset_request():
         user.send_reset_email()
         flash('На вашу почту было отправлено письмо для восстановления пароля', 'info')
         return redirect(url_for('users.login'))
-    return render_template('reset_request.html', form=form)
+    return render_template('reset_request.html', form=form, title="Забыли пароль")
     
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
@@ -112,4 +112,4 @@ def reset_token(token):
         db.session.commit()
         flash('Ваш пароль был обновлен', 'success')
         return redirect(url_for('users.login'))
-    return render_template('reset_token.html', form=form)
+    return render_template('reset_token.html', form=form, title="Сброс пароля")

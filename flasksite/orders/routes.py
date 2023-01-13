@@ -12,7 +12,7 @@ def orders_act():
     if current_user.admin != True:
         abort(403)
     orders = Order.query.filter_by(completed=False).order_by(Order.date_ordered.desc())
-    return render_template("orders.html", orders=orders, legend="Активные заказы")
+    return render_template("orders.html", orders=orders, legend="Активные заказы", title="Активные заказы")
 
 @orders.route("/orders")
 @login_required
@@ -20,7 +20,7 @@ def orders_all():
     if current_user.admin != True:
         abort(403)
     orders = Order.query.order_by(Order.date_ordered.desc())
-    return render_template("orders.html", orders=orders, legend="Все заказы")
+    return render_template("orders.html", orders=orders, legend="Все заказы", title="Все заказы")
 
 @orders.route("/order/<int:id>", methods=["GET", "POST"])
 @login_required
@@ -48,5 +48,5 @@ def order(id):
         user.volume += float(order.quantity)
         db.session.commit()
         return redirect(url_for("users.user_orders", nickname=user.nickname))
-    return render_template("order.html", form_d=form_d, order=order, form_c=form_c)
+    return render_template("order.html", form_d=form_d, order=order, form_c=form_c, title="Заказ номер "+str(order.id))
     

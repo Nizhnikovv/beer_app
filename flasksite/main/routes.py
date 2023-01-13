@@ -24,14 +24,16 @@ def buy():
         if Order.query.filter_by(author=user, completed=False).first():
             flash("Вы не можете иметь более одного не выполненного заказа", "warning")
             return redirect(url_for("users.user_orders", nickname=user.nickname))
-        form.populate_obj(order)
+        order.item = int(form.item.data)
+        order.quantity = float(form.quantity.data)
         order.author = user
+        order.unit_price = Order.key_price[order.item]
         db.session.add(order)
         db.session.commit()
         User.send_order_notif(order)
         flash("Заказ был сделан!", "success")
         return redirect(url_for("orders.order", id=order.id))
-    return render_template("buy.html", form=form)
+    return render_template("buy.html", form=form, title="Магазин")
 
 
         

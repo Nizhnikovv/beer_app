@@ -81,6 +81,9 @@ class Order(db.Model):
     date_ordered = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=pytz.timezone("Europe/Moscow")))
     item = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    unit_price = db.Column(db.Integer, nullable=False, default=90)
+    unit_price = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, default=current_user)
     completed = db.Column(db.Boolean, nullable=False, default=False)
+
+    key_beer = {1:"Hoegaarden", 2:"Bud"}
+    key_price = {1:90, 2:90}
