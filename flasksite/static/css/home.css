@@ -1,23 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
 *{margin: 0px; padding: 0px;}
+html, body{height: 100%;}
 a, li{text-decoration: none; list-style: none;}
 body{
 font-family: monospace;
 background-image: url(../images/background.jpg);
 background-size: cover;
 background-repeat: repeat;
-background-position: 60% center;
+background-position: center;
 animation: pulse 300s linear infinite both;}
-.main{width: 100% !important; height: 100%;}
-.main:after{
-content: '';
-position: absolute; 
-top: 0px; 
-right: 0px;
-width: 50%;
-height: 100%;
-background-color: rgb(21, 22, 28);
-z-index: -1;}
+.row{margin: 0%;}
 
 /* ^main classes^*/
 /* <Animations> */
@@ -33,6 +25,8 @@ z-index: -1;}
 /* </Animations> */
 /* <main> */
 
+.container-fluid{padding: 0%;}
+.container-fluid .row:nth-child(1){position: absolute; left: 0px; top:0px}
 .cont2{height: 100%; background-color: rgb(21, 22, 28);}
 .buttonMain{padding: 30px;}
 .LOGER{
@@ -60,7 +54,7 @@ color: rgb(255, 255, 255, 0.8);}
 .logo a h1:hover{
 transition: 500ms;
 color: cadetblue;}
-.panda{margin-left: 2%; height: 100%;}
+.panda{margin-top: 15%; height: 100%;}
 .panda .button{margin: 10% 0%;}
 .textBoard{
 text-align: center;
@@ -136,22 +130,24 @@ color: #fff;}
 
 
 
-.cont{position: relative;}
+.cont{
+position: relative;
+padding: 0px;
+background-color: rgb(21, 22, 28);
+height: 1300px;}
 .header{
-position: absolute;
-top: -14%;
-height: 80px;
+position: relative;
 background-color: #212529;}
 .header:after{
 content: '';
 position: absolute;
 width: 100%;
 height: 10px;
-bottom: -5px;
+bottom: 0px;
 background-color: rgb(132, 115, 77);}
-.headerMain{
+.headerFirst{
 background-color: #fff; 
-height: 100px;
+height: 110px;
 z-index: 1;
 }
 .Hbutton a{
@@ -159,8 +155,17 @@ color: black;
 font-size: x-large;
 font-family: 'Oswald';}
 .Hbutton a:hover{color: rgb(132, 115, 77); transition: 500ms;}
-
-
+.headerSec a:hover::after{
+content: '';
+position: absolute;
+animation: wow 100ms linear both;
+top: 30px;
+left: 0px;
+width: 100%;
+height: 2px;
+background-color: #fff;}
+.headerSec a{position: relative; font-size: 20px; color: #fff;}
+.userImg img{border-radius: 50%; border: 3px solid black}
 
 
 
@@ -169,7 +174,7 @@ font-family: 'Oswald';}
 
 .footer{
 position: fixed;
-width: 100%;
+width: 100vw;
 left: 0;
 bottom: 0;}
 .txt{
@@ -182,18 +187,28 @@ background-color: rgb(21, 22, 28);}
 /* <media> */
 
 @media (max-width:1200px){
-.main:after{width: 100%; height: 50%; top: unset;}
+.main:after{position: absolute; width: 100%; height: 50%; top: unset; bottom: 0px;}
 .txt{bottom: -1000px;}
+.cont{height:100%;}
 }
 
 @media (max-width:992px){
-.header{justify-content: center !important;}
-.panda .button{margin: 5% 0%; padding-bottom: 50px;}
+.header{justify-content: center !important; flex-wrap: wrap}
+.panda .button{padding-bottom: 50px;}
+.headerFirst{margin: 0 auto;}
 }
 @media (max-width:768px){
 .cont2{margin-top: 0px;}
+.header{justify-content: start !important;flex-wrap: wrap;}
+.headerSec{padding-bottom: 50px; flex-wrap: wrap;}
 .leaderboard{width: 100%;}}
-@media (max-width:524px){
+@media (max-width:600px){
+.headerSec{flex-direction: column; gap: 10px;}
+.headerSec{flex-direction: row;}
+.header:after{bottom: -11px;}
+}
+@media (max-width:580px){.headerFirst{margin: 0 auto;}}
+@media (max-width:425px){
+.panda{margin-top: 40%;}
 }
 /* </media> */
-

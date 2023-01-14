@@ -12,7 +12,6 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
-	<script src="{{url_for('static', filename='js/home.js')}}"></script>
 	<link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}" />
 	<title>1221{%if title%}: {{title}}{%endif%}</title>
   <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images/favicon.png')}}"
@@ -21,27 +20,52 @@
 <section class="main">
 <div class="container-fluid">
 <div class="row col-12 justify-content-between align-items-center">
-  <div class="logo col-3"><a href="{{url_for('main.home')}}"><h1>1221</h1></a></div>
+	<div class="logo col-3"><a href="{{url_for('main.home')}}"><h1>1221</h1></a></div>
 </div>
-<div class="row flex-wrap justify-content-between">
-  <div class="col-lg-12 col-xl-6">
-  <div class="panda d-flex flex-column justify-content-center col-12 col-xl-6">
-    <div class="Orc"><img src="{{url_for('static', filename='/images/panda-4-svgrepo-com.svg')}}"></div>
-    <div class="text">
-      <h1>Как гласит одна</h1>
-      <h2>Мудрая панда:</h2>
-      <p>"Пивка для рывка"</p>
-    </div>
-    <div class="button"><a href="{{url_for('main.buy')}}">В магазин!</a></div>
-  </div>
-  </div>
-  
-  <div class="cont d-flex flex-column align-items-center col-lg-12 col-xl-6">
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+<div class="row flex-wrap align-items-start justify-content-between w-100">
+	<div class="col-lg-12 col-xl-6">
+	<div class="panda d-flex flex-column justify-content-center col-12 col-xl-6">
+		<div class="Orc col-6"><img src="{{url_for('static', filename='images/panda-4-svgrepo-com.svg')}}"></div>
+		<div class="text">
+			<h1>Как гласит одна</h1>
+			<h2>Мудрая панда:</h2>
+			<p>"Пивка для рывка"</p>
+		</div>
+		<div class="button"><a href="{{url_for('main.buy')}}">В магазин!</a></div>
+	</div>
+	</div>
+	
+	<div class="cont d-flex flex-column align-items-center col-lg-12 col-xl-6">
+	
+	<div class="header col-12 d-flex align-items-center gap-5 mb-5">
+		{%if current_user.is_authenticated%}
+		<div class="headerFirst d-flex justify-content-evenly align-items-center col-12 col-sm-5 col-lg-3 col-xl-4">
+		<div class="userImg col-4"><a href="{{url_for('users.user_orders', nickname=current_user.nickname)}}"><img src="{{url_for('static', filename='prof_pict/'+current_user.image_file)}}" class="w-100"></a></div>
+		<div class="Hbutton col-5"><a class="fs-2" href="{{url_for('users.user_orders', nickname=current_user.nickname)}}">{{current_user.nickname}}</a></div>
+		</div>
+		
+		<div class="headerSec col-11 col-lg-8 col-xl-7 gap-4 d-flex justify-content-evenly">
+			
+		<div class="col-5 col-lg-4"><a href="{{url_for('users.update_user', nickname=current_user.nickname)}}">Изменить данные профиля</a></div>
+		{%if current_user.admin == True%}
+		<div class="col-4 col-lg-3"><a href="{{url_for('orders.orders_act')}}">Активные заказы</a></div>
+		<div class="col-5 col-lg-2"><a href="{{url_for('orders.orders_all')}}">Все заказы</a></div>
+		{%endif%}
+		<div class="col-4 col-lg-2"><a href="{{url_for('users.logout')}}">Выход</a></div>
+		</div>
+		{%else%}
+		<div class="headerFirst d-flex justify-content-evenly align-items-center col-12 col-sm-9 col-xl-6">
+    	<div class="Hbutton col-2"><a href="{{url_for('users.login')}}"> Войти</a></div>
+    	<div class="Hbutton col-5"><a href="{{url_for('users.register')}}"> Зарегестрироваться</a></div>
+    	</div>
+		{%endif%}
+	</div>
+	
+{% with messages = get_flashed_messages(with_categories=true) %} {% if
       messages %} {% for category, message in messages %}
       <div class="alert alert-{{ category }}">{{ message }}</div>
       {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
-  </div>
+
 </div>
 </div>
 </section>

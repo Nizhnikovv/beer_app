@@ -1,25 +1,27 @@
 {% extends "layout.html" %} {% block content %}
-<div class="leaderboard col-10 col-md-12 col-lg-9">
-  <div class="row">
-    <div class="text-center col-8"><p>Заказы {{user.nickname}}({{length}})</p></div>
-    {% if current_user.admin == True %}
-    <div class="col-4">
-      <a
-        class="btn btn-secondary btn-sm mt-1 mb-1"
-        href="{{ url_for('users.update_user', nickname=user.nickname) }}"
-        >Update</a
-      >
-      <button
-        type="button"
-        class="btn btn-danger btn-sm m-1"
-        data-bs-toggle="modal"
-        data-bs-target="#deleteModal"
-      >
-       Удалить 
-      </button>
-    </div>
-    {% endif %}
+<div class="row">
+  <div class="text-center col-8">
+    <p>Заказы {{user.nickname}}({{length}})</p>
   </div>
+  {% if current_user.admin == True %}
+  <div class="col-4">
+    <a
+      class="btn btn-secondary btn-sm mt-1 mb-1"
+      href="{{ url_for('users.update_user', nickname=user.nickname) }}"
+      >Update</a
+    >
+    <button
+      type="button"
+      class="btn btn-danger btn-sm m-1"
+      data-bs-toggle="modal"
+      data-bs-target="#deleteModal"
+    >
+      Удалить
+    </button>
+  </div>
+  {% endif %}
+</div>
+<div class="leaderboard col-10 col-md-12 col-lg-9">
   <table>
     <tr>
       <td class="col-1">ID</td>
@@ -30,7 +32,9 @@
     </tr>
     {%for order in orders%}
     <tr>
-      <td class="col-1"><a href="{{url_for('orders.order', id=order.id)}}">{{order.id}}</a></td>
+      <td class="col-1">
+        <a href="{{url_for('orders.order', id=order.id)}}">{{order.id}}</a>
+      </td>
       <td class="col-2">{{order.date_ordered.strftime("%d.%m.%Y %-H:%M")}}</td>
       <td class="col-3">
         {%if order.item == 2%}Bud{%else%}Hoegaarden{%endif%}

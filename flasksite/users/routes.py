@@ -113,3 +113,8 @@ def reset_token(token):
         flash('Ваш пароль был обновлен', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', form=form, title="Сброс пароля")
+
+@users.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("main.home"))

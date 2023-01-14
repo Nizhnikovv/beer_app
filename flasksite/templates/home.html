@@ -1,20 +1,2 @@
-{% extends "layout.html" %} {% block content %} {%for i in range(length)%}
-  <div class="row mb-4 p-2 bg-warning rounded-5">
-    <div class="col-1 fs-1">{{i+1}}.</div>
-    <div class="col-1">
-      <img
-        src="{{url_for('static',
-      filename='prof_pict/'+users[i].image_file)}}"
-        class="img-fluid rounded-circle"
-        alt="avatar"
-      />
-    </div>
-    <div class="col">
-      <div class="row">{{users[i].nickname}}</div>
-      <div class="row">{{users[i].date_since.strftime("%-d.%m.%Y")}}</div>
-    </div>
-    <div class="col-6 fs-1">
-      {{users[i].volume}} Литров
-    </div>
-  </div>
-{%endfor%} {% endblock content %}
+{% extends "layout.html" %} {% block content %}
+{% endblock content %}

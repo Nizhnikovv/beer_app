@@ -12,7 +12,7 @@ main = Blueprint("main", __name__)
 def home():
     users = User.query.order_by(User.volume.desc()).all()
     length = len(users)
-    return render_template("HomePage_new.html", users=users, length=length) 
+    return render_template("home.html", users=users, length=length) 
 
 @main.route("/buy", methods=["GET", "POST"])
 @login_required
