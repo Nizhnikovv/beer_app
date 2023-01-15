@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, Length, ValidationError, Email, Equ
 from flasksite.models import User
 
 class UserForm(FlaskForm):
-    nickname = StringField("Введите никнейм", [DataRequired("Введите никнейм"), Length(message="Никнейм должен не должен превышать 10 символов", max=10)])
+    nickname = StringField("Введите никнейм(поменять его будет нельзя)", [DataRequired("Введите никнейм"), Length(message="Никнейм должен не должен превышать 10 символов", max=10)])
     email = EmailField("Введите вашу почту", [Email("Введите корректный адрес электронной почты")])
     password = PasswordField("Введите пароль", [DataRequired("Введите пароль")])
     con_password = PasswordField("Повторите пароль", [EqualTo(message="Пароли не совпадают", fieldname="password")])
