@@ -1,2 +1,31 @@
 {% extends "layout.html" %} {% block content %}
+  <div class="text-center col-8">
+    <p>Рейтинг пивозавров</p>
+  </div>
+<div class="leaderboard col-10 col-md-12 col-lg-9 fs-5">
+  <table>
+    <tr>
+      <td class="col-1">#</td>
+      <td class="col-2">NICK</td>
+      <td class="col-3 col-md-2">PHOTO</td>
+      <td class="col-4">SINCE</td>
+      <td class="col-3">L</td>
+    </tr>
+    {%for i in range(length)%}
+    <tr>
+      <td class="col-1">{{i+1}}</td>
+      <td class="col-2">{{users[i].nickname}}</td>
+      <td class="col-1">
+        <img
+          src="{{url_for('static', filename='prof_pict/'+users[i].image_file)}}"
+          alt=""
+          class="img-fluid rounded-circle p-3"
+        />
+      </td>
+      <td class="col-5">{{users[i].date_since.strftime('%d.%m.%Y')}}</td>
+      <td class="col-3">{{users[i].volume}}</td>
+    </tr>
+    {%endfor%}
+  </table>
+</div>
 {% endblock content %}

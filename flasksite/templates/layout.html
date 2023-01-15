@@ -46,7 +46,7 @@
 		
 		<div class="headerSec col-11 col-lg-8 col-xl-7 gap-4 d-flex justify-content-evenly">
 			
-		<div class="col-5 col-lg-4"><a href="{{url_for('users.update_user', nickname=current_user.nickname)}}">Изменить данные профиля</a></div>
+		<div class="col-5 col-lg-4"><a href="{{url_for('users.update_user', nickname=current_user.nickname)}}">Изменить данные пивозавра</a></div>
 		{%if current_user.admin == True%}
 		<div class="col-4 col-lg-3"><a href="{{url_for('orders.orders_act')}}">Активные заказы</a></div>
 		<div class="col-5 col-lg-2"><a href="{{url_for('orders.orders_all')}}">Все заказы</a></div>
