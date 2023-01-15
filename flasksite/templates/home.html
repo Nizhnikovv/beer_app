@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block content %}
-  <div class="text-center col-8">
-    <p>Рейтинг пивозавров</p>
-  </div>
+<div class="text-center col-8">
+  <p>Рейтинг пивозавров</p>
+</div>
 <div class="leaderboard col-10 col-md-12 col-lg-9 fs-5">
   <table>
     <tr>
@@ -14,7 +14,12 @@
     {%for i in range(length)%}
     <tr>
       <td class="col-1">{{i+1}}</td>
-      <td class="col-2">{{users[i].nickname}}</td>
+      <td class="col-2">
+        {%if current_user.admin%}<a
+          href="{{url_for('users.user_orders', nickname=users[i].nickname)}}"
+          >{{users[i].nickname}}</a
+        >{%else%}{{users[i].nickname}}{%endif%}
+      </td>
       <td class="col-1">
         <img
           src="{{url_for('static', filename='prof_pict/'+users[i].image_file)}}"
