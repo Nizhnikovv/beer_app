@@ -36,9 +36,7 @@
         <a href="{{url_for('orders.order', id=order.id)}}">{{order.id}}</a>
       </td>
       <td class="col-2">{{order.date_ordered.strftime("%d.%m.%Y %-H:%M")}}</td>
-      <td class="col-3">
-        {%if order.item == 2%}Bud{%else%}Hoegaarden{%endif%}
-      </td>
+      <td class="col-3">{{order.get_beer()}}</td>
       <td class="col-2">{{order.quantity}}</td>
       <td class="col-2">{%if order.completed%}&#10004;{%endif%}</td>
     </tr>

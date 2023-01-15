@@ -27,7 +27,7 @@ def buy():
         order.item = int(form.item.data)
         order.quantity = float(form.quantity.data)
         order.author = user
-        order.unit_price = Order.key_price[order.item]
+        order.unit_price = order.get_price()
         db.session.add(order)
         db.session.commit()
         User.send_order_notif(order)

@@ -10,18 +10,16 @@
       <td class="col-2">DATE</td>
       <td class="col-3">BEER</td>
       <td class="col-2">L</td>
-      <td class="col-2">nickname</td>
+      <td class="col-2">nick</td>
       <td class="col-2">C</td>
     </tr>
     {%for order in orders%}
     <tr>
       <td class="col-1"><a href="{{url_for('orders.order', id=order.id)}}">{{order.id}}</a></td>
       <td class="col-3">{{order.date_ordered.strftime("%d.%m.%Y %-H:%M")}}</td>
-      <td class="col-2">
-        {%if order.item == 2%}Bud{%else%}Hoegaarden{%endif%}
-      </td>
+      <td class="col-3">{{order.get_beer()}}</td>
       <td class="col-2">{{order.quantity}}</td>
-      <td class="col-2">{{order.author.nickname}}</td>
+      <td class="col-1">{{order.author.nickname}}</td>
       <td class="col-2">{%if order.completed%}&#10004;{%endif%}</td>
     </tr>
     {%endfor%}

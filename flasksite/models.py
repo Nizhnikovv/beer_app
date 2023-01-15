@@ -87,3 +87,9 @@ class Order(db.Model):
 
     key_beer = {1:"Hoegaarden", 2:"Bud"}
     key_price = {1:90, 2:90}
+
+    def get_price(self):
+        return self.key_price[self.item]
+
+    def get_beer(self):
+        return self.key_beer[self.item]
