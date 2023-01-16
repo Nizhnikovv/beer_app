@@ -84,7 +84,7 @@ class Order(db.Model):
     completed = db.Column(db.Boolean, nullable=False, default=False)
 
     key_beer = {1:"Hoegaarden", 2:"Bud"}
-    key_price = {1:90, 2:90}
+    key_price = {1:180, 2:180}
 
     def get_price(self):
         return self.key_price[self.item]

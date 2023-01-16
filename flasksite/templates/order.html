@@ -12,9 +12,12 @@
     {%if order.completed%}Выполнен{%else%}Не выполнен{%endif%}
   </div>
 </div>
-<div class="text-white display-4 row mb-5">
+<div class="text-white display-4 row mb-2">
   <div class="col">{{order.get_beer()}}</div>
   <div class="col">{{order.quantity}}L</div>
+</div>
+<div class="text-white fs-1 mb-5">
+  Итого: {{order.get_price()*order.quantity}} &#x20bd;
 </div>
 <div class="fs-5 text-white mb-5 mx-3">
   В ближайщее удобное время прийдите за заказом в блок 1221, чтобы выполнить его. Всегда лучше приходить после обеда, так как персонажи в будние дни учатся, а в выходные спят. Срок жизни не
