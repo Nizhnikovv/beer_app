@@ -5,30 +5,30 @@
 <div class="leaderboard col-10 col-md-12 col-lg-9 fs-5">
   <table>
     <tr>
-      <td class="col-1">#</td>
-      <td class="col-2">NICK</td>
-      <td class="col-3 col-md-2">PHOTO</td>
-      <td class="col-4">SINCE</td>
-      <td class="col-3">L</td>
+      <td class="col-1 col-md-1">#</td>
+      <td class="col-3 col-md-2">NICK</td>
+      <td class="col-0 col-md-2 d-none d-md-table-cell">PHOTO</td>
+      <td class="col-5 col-md-4">SINCE</td>
+      <td class="col-1 col-md-3">L</td>
     </tr>
     {%for i in range(length)%}
     <tr>
-      <td class="col-1">{{i+1}}</td>
-      <td class="col-2">
+      <td class="col-1 col-md-1">{{i+1}}</td>
+      <td class="col-3 col-md-2">
         {%if current_user.admin%}<a
           href="{{url_for('users.user_orders', nickname=users[i].nickname)}}"
           >{{users[i].nickname}}</a
         >{%else%}{{users[i].nickname}}{%endif%}
       </td>
-      <td class="col-1">
+      <td class="col-0 col-md-2 d-none d-md-table-cell">
         <img
           src="{{url_for('static', filename='prof_pict/'+users[i].image_file)}}"
           alt=""
           class="img-fluid rounded-circle p-3"
         />
       </td>
-      <td class="col-5">{{users[i].date_since.strftime('%d.%m.%Y')}}</td>
-      <td class="col-3">{{users[i].volume}}</td>
+      <td class="col-5 col-md-4">{{users[i].date_since.strftime('%d.%m.%Y')}}</td>
+      <td class="col-1 col-md-3">{{users[i].volume}}</td>
     </tr>
     {%endfor%}
   </table>
