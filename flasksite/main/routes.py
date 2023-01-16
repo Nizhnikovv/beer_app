@@ -28,6 +28,7 @@ def buy():
         order.quantity = float(form.quantity.data)
         order.author = user
         order.unit_price = order.get_price()
+        order.date_since = datetime.now(tz=pytz.timezone("Europe/Moscow"))
         db.session.add(order)
         db.session.commit()
         User.send_order_notif(order)
