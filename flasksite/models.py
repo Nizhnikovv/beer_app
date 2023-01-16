@@ -78,7 +78,7 @@ class User(db.Model, UserMixin):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_ordered = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=pytz.timezone("Europe/Moscow")))
+    date_ordered = db.Column(db.DateTime, nullable=False)
     item = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     unit_price = db.Column(db.Integer, nullable=False)
