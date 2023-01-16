@@ -4,6 +4,8 @@ from flasksite.models import User, Order
 from flasksite import db, bcrypt
 from .utils import save_picture, delete_picture
 from flask_login import login_user, logout_user, current_user, login_required
+from datetime import datetime
+import pytz
 
 users = Blueprint("users", __name__)
 
@@ -19,6 +21,7 @@ def register():
             user.image_file = picture_file
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
         user.password = hashed_pw
+        user.date_since = datetime.now(tz=pytz.timezone("Europe/Moscow"))
         db.session.add(user)
         db.session.commit()
         flash("Ваш аккаунт был создан!", "success")
