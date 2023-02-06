@@ -34,7 +34,7 @@ def order(id):
     if form_d.validate_on_submit() and "submit_d" in request.form:
         if current_user.admin == False and order.completed == True:
             abort(403)
-        User.send_order_deletion(order)
+        User.send_order_deletion.delay(order.id, order.quantity, order.get_beer(), order.user_id)
         if order.completed == True:
             user.volume -= float(order.quantity)
         db.session.delete(order)

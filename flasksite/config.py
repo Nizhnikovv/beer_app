@@ -12,3 +12,5 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = "dmitrix_n@mail.ru" 
     MAIL_PASSWORD = config.get("MAIL_PASSWORD")
+    SERVER_NAME = "localhost:5000"
+    CELERY_BROKER = "redis://localhost:6379/0"

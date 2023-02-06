@@ -3,7 +3,7 @@ from flasksite.models import User, Order
 from flasksite import db
 from flask_login import login_required, current_user
 from .forms import BuyForm
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz
 
 main = Blueprint("main", __name__)
@@ -31,7 +31,7 @@ def buy():
         order.date_ordered = datetime.now(tz=pytz.timezone("Europe/Moscow"))
         db.session.add(order)
         db.session.commit()
-        User.send_order_notif(order)
+        User.send_order_notif.delay(order.id)
         flash("Заказ был сделан!", "success")
         return redirect(url_for("orders.order", id=order.id))
     return render_template("buy.html", form=form, title="Магазин")

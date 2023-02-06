@@ -95,7 +95,7 @@ def reset_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        user.send_reset_email()
+        User.send_reset_email.delay(user.id)
         flash('На вашу почту было отправлено письмо для восстановления пароля', 'info')
         return redirect(url_for('users.login'))
     return render_template('reset_request.html', form=form, title="Забыли пароль")

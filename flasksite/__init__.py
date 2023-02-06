@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flasksite.config import Config
 from flask_bcrypt import Bcrypt
+from celery import Celery
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -12,7 +13,7 @@ login_manager.login_message = "Сначала авторизуйтесь"
 login_manager.login_message_category = "info"
 mail = Mail()
 bcrypt = Bcrypt()
-
+celery = Celery(__name__, broker=Config.CELERY_BROKER)
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -35,18 +36,10 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
 
-    from flasksite.models import User, Order
-    from datetime import datetime, timedelta
-    import pytz
+    from .models import Order
     @app.before_request
     def before():
-        orders = Order.query.filter_by(completed=False)
-        msc_tz = pytz.timezone("Europe/Moscow")
-        for order in orders:
-            if msc_tz.localize(order.date_ordered) + timedelta(days=1) < datetime.now(tz=pytz.timezone("Europe/Moscow")):
-                User.send_order_deletion(order)
-                db.session.delete(order)
-        db.session.commit()
+        Order.check_orders_exp.delay()
 
     return app
     
