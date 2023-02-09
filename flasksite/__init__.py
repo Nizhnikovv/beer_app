@@ -2,9 +2,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
-from flasksite.config import Config
+from flasksite.config import ProductionConfig as Config
 from flask_bcrypt import Bcrypt
 from celery import Celery
+import json
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -15,9 +16,10 @@ mail = Mail()
 bcrypt = Bcrypt()
 celery = Celery(__name__, broker=Config.CELERY_BROKER)
 
-def create_app(config_class=Config):
+def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    app.config.from_file("/etc/config_beersite.json", load=json.load)
 
     db.init_app(app)
     login_manager.init_app(app)

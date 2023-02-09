@@ -1,16 +1,24 @@
-import json
 
-with open("/etc/config_beersite.json") as config_file:
-    config = json.load(config_file)
 
 class Config:
-    SECRET_KEY = config.get("SECRET_KEY")
     DB_NAME = "site.db"
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + DB_NAME
     MAIL_SERVER = "smtp.mail.ru"
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = "dmitrix_n@mail.ru" 
-    MAIL_PASSWORD = config.get("MAIL_PASSWORD")
-    SERVER_NAME = "localhost:5000"
     CELERY_BROKER = "redis://localhost:6379/0"
+
+class ProductionConfig(Config):
+    SERVER_NAME = "1221.pro"
+    PREFERRED_URL_SCHEME = "https"
+
+
+class DevelopmentConfig(Config):
+    SERVER_NAME = "localhost:8000"
+
+
+class TestingConfig(Config):
+    SERVER_NAME = "localhost:5000"
+    DEBUG = True
+    TESTING = True
