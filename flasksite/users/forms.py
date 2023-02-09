@@ -58,7 +58,7 @@ class UpdateUser(FlaskForm):
         if User.query.get(int(self.user_id.data)).email != email.data:
             user = User.query.filter_by(email=email.data).first()
             if user:
-                raise ValidationError('That email is taken. Please choose a different one.')
+                raise ValidationError('Эта почта уже занята. Пожалуйста попробуйте другую.')
 
 class RequestResetForm(FlaskForm):
     email = StringField('Почта')
@@ -70,7 +70,6 @@ class RequestResetForm(FlaskForm):
             raise ValidationError('Аккаунта с такой почтой нет')
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    confirm_password = PasswordField('Повторить пароль',
-                                     validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Пароль', validators=[DataRequired("Введите новый пароль")])
+    confirm_password = PasswordField('Повторить пароль', [EqualTo(fieldname='password', message="Пароли не совпадают")])
     submit = SubmitField('Сбросить пароль')
