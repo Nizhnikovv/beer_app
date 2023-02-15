@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
-from flasksite.config import CeleryConfig, TestingConfig as Config
+from flasksite.config import CeleryConfig, ProductionConfig as Config
 from flask_bcrypt import Bcrypt
 from celery import Celery
 import json
