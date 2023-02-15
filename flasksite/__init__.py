@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
-from flasksite.config import ProductionConfig as Config
+from flasksite.config import CeleryConfig, TestingConfig as Config
 from flask_bcrypt import Bcrypt
 from celery import Celery
 import json
@@ -14,7 +14,7 @@ login_manager.login_message = "Сначала авторизуйтесь"
 login_manager.login_message_category = "info"
 mail = Mail()
 bcrypt = Bcrypt()
-celery = Celery(__name__, broker=Config.CELERY_BROKER)
+celery = Celery(__name__, broker=CeleryConfig.broker_url)
 
 def create_app():
     app = Flask(__name__)
@@ -25,6 +25,7 @@ def create_app():
     login_manager.init_app(app)
     mail.init_app(app)
     bcrypt.init_app(app)
+    celery.config_from_object(CeleryConfig)
 
     from flasksite.main.routes import main
     from flasksite.users.routes import users
@@ -37,11 +38,6 @@ def create_app():
 
     with app.app_context():
         db.create_all()
-
-    from .models import Order
-    @app.before_request
-    def before():
-        Order.check_orders_exp.delay()
 
     return app
     

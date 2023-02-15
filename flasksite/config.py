@@ -7,7 +7,7 @@ class Config:
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = "dmitrix_n@mail.ru" 
-    CELERY_BROKER = "redis://localhost:6379/0"
+
 
 class ProductionConfig(Config):
     SERVER_NAME = "1221.pro"
@@ -22,3 +22,12 @@ class TestingConfig(Config):
     SERVER_NAME = "localhost:5000"
     DEBUG = True
     TESTING = True
+
+class CeleryConfig:
+    broker_url = "redis://localhost:6379/0"
+    beat_schedule = {
+        "exp_check": {
+            "task": "flasksite.models.check_orders_exp",
+            "schedule": 60.0
+        }
+    }
