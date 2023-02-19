@@ -6,7 +6,7 @@ class Config:
     MAIL_SERVER = "smtp.mail.ru"
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = "dmitrix_n@mail.ru" 
+    MAIL_USERNAME = "dmitrix_n@mail.ru"
 
 
 class ProductionConfig(Config):
